@@ -192,9 +192,9 @@ public class RoundRobin extends JFrame {
 
         // Create a ready queue array by sorting the lists based on arrival times
         int size = processIds.size();
-        String[] readyQueueProcessIds = new String[size * 3];
-        int[] readyQueueArrivalTimes = new int[size * 3];
-        int[] readyQueueBurstTimes = new int[size * 3];
+        String[] readyQueueProcessIds = new String[size*4];
+        int[] readyQueueArrivalTimes = new int[size*4];
+        int[] readyQueueBurstTimes = new int[size*4];
 
         List<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -212,50 +212,89 @@ public class RoundRobin extends JFrame {
         String arr = Arrays.toString(readyQueueProcessIds);
         queuetxt.setText(arr);
 
+        // Now you have the ready queue arrays sorted by arrival times
+
+        System.out.println("Ready Queue (sorted by arrival times):");
+        for (int i = 0; i < size; i++) {
+            System.out.println("Process ID: " + readyQueueProcessIds[i] + " Arrival Time: " + readyQueueArrivalTimes[i]
+                    + " Burst Time: " + readyQueueBurstTimes[i]);
+        }
+
         // pbar[indexes.get(0) + 1].setValue(100);
-        StringBuilder build = new StringBuilder(arr.substring(1, num * 4));
+        StringBuilder build= new StringBuilder(arr.substring(0,num*4));
         new Thread(() -> {
+            int turnTime = 0;
+            int total = 0;
+            int tol=0;
             int timeQuantum=100;
-            int currentTime = 0;
-            int index = 0;
-            
-            while(true) {
-            
-              boolean done = true;
-              
-              for(int i=0; i<num; i++) {
-              
-                if(readyQueueBurstTimes[i] > 0) {
+            int n=num,x=0,l=0;
+            int[] ind=new int[size*4];
+            for (int i = 0; i < n; i++) {
+                // queuetxt.setText(Arrays.toString(arr.substring(i+1)));
                 
-                  done = false;
-                  
-                  if(readyQueueArrivalTimes[i] <= currentTime) {
-                  
-                    // Process for time quantum
-                    int time = Math.min(timeQuantum, readyQueueBurstTimes[i]);
-                    readyQueueBurstTimes[i] -= time;
-                    
-                    currentTime += time;
-                    
-                    // Check if process fully executed
-                    if(readyQueueBurstTimes[i] == 0) {
-                      // Calculate turnaround time
+                if(num==10) queuetxt.setText(build.substring((i+1)*4+1));
+                else queuetxt.setText(build.substring((i+1)*4));
+                CPUtxt.setText(readyQueueProcessIds[i]);
+                CPUtxt.setForeground(Color.RED);
+
+                if(i<num){
+                   pbar[indexes.get(i) + 1].setMinimum(0);
+                   pbar[indexes.get(i) + 1].setMaximum((readyQueueBurstTimes[i])*100);
+                   if(readyQueueBurstTimes[i]==0) pbar[indexes.get(i) + 1].setMaximum((readyQueueBurstTimes[i]+1)*100);
+                }
+                turnTime=total+readyQueueBurstTimes[i];
+                tol=tol+turnTime;
+                if(i>=num){
+                   burstTime[ind[l]].setText(total + "s");
+                turnTime=total+readyQueueBurstTimes[i];
+                tol=tol+turnTime;
+                waitTime[ind[l]].setText( turnTime+ "s"); 
+                }else{
+                    burstTime[indexes.get(i) + 1].setText(total + "s");
+                
+                waitTime[indexes.get(i) + 1].setText( turnTime+ "s");
+                }
+
+                
+                // while (readyQueueBurstTimes[i] != 0) {
+                    int cnt=0;
+                    while (cnt < timeQuantum) {
+                        cnt=cnt+10;
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        
+                        if(i>=num) pbar[ind[l]].setValue(pbar[ind[l]].getValue()+10);
+                           
+                        else pbar[indexes.get(i) + 1].setValue(cnt);
+                        
+
                     }
                     
-                  }
-                  
-                }
-                
-              }
-              
-              if(done) {
-                break;
-              }
-              
+                    if(cnt<readyQueueBurstTimes[i]*100){
+                        readyQueueProcessIds[n]=readyQueueProcessIds[i];
+                        readyQueueBurstTimes[n]=readyQueueBurstTimes[i]-1;
+                        build.append(", "+ readyQueueProcessIds[i]);
+                        if(i>=num) ind[x++]=ind[l];
+                        else ind[x++]=indexes.get(i)+1;
+                        n++;
+                    }
+                    if(i>=num) l++;
+                    total = total + readyQueueBurstTimes[i];
+                    // readyQueueBurstTimes[i] = 0;
+                    
+                // }
             }
-            
-          }).start();
+            AWTtxt.setText((float)total/num +"s");
+            ATTtxt.setText((float)tol/num +"s");
+            CPUtxt.setText("Idle");
+            queuetxt.setText("Processes Completed");
 
+        }).start();
+        
     }
 
 }

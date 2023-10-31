@@ -227,7 +227,8 @@ public class SJF extends JFrame {
             int tol=0;
             for (int i = 0; i < num; i++) {
                 // queuetxt.setText(Arrays.toString(arr.substring(i+1)));
-                queuetxt.setText(arr.substring((i+1)*4));
+                if(num==10) queuetxt.setText(arr.substring((i+1)*4+1));
+                else queuetxt.setText(arr.substring((i+1)*4));
                 CPUtxt.setText(readyQueueProcessIds[i]);
                 CPUtxt.setForeground(Color.RED);
                 pbar[indexes.get(i) + 1].setMinimum(0);
@@ -259,6 +260,7 @@ public class SJF extends JFrame {
             AWTtxt.setText((float)total/num +"s");
             ATTtxt.setText((float)tol/num +"s");
             CPUtxt.setText("Idle");
+            queuetxt.setText("Processes Completed");
 
         }).start();
         

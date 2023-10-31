@@ -214,6 +214,11 @@ public class FCFS extends JFrame {
 
         // Now you have the ready queue arrays sorted by arrival times
 
+        System.out.println("Ready Queue (sorted by arrival times):");
+        for (int i = 0; i < size; i++) {
+            System.out.println("Process ID: " + readyQueueProcessIds[i] + " Arrival Time: " + readyQueueArrivalTimes[i]
+                    + " Burst Time: " + readyQueueBurstTimes[i]);
+        }
 
         // pbar[indexes.get(0) + 1].setValue(100);
 
@@ -223,7 +228,8 @@ public class FCFS extends JFrame {
             int tol=0;
             for (int i = 0; i < num; i++) {
                 // queuetxt.setText(Arrays.toString(arr.substring(i+1)));
-                queuetxt.setText(arr.substring((i+1)*4));
+                if(num==10) queuetxt.setText(arr.substring((i+1)*4+1));
+                else queuetxt.setText(arr.substring((i+1)*4));
                 CPUtxt.setText(readyQueueProcessIds[i]);
                 CPUtxt.setForeground(Color.RED);
                 pbar[indexes.get(i) + 1].setMinimum(0);
@@ -234,7 +240,7 @@ public class FCFS extends JFrame {
                 waitTime[indexes.get(i) + 1].setText( turnTime+ "s");
                 // while (readyQueueBurstTimes[i] != 0) {
                     int cnt=0;
-                    while (cnt <= (readyQueueBurstTimes[i]+1)*100) {
+                    while (cnt < (readyQueueBurstTimes[i]+1)*100) {
                         cnt=cnt+10;
                         try {
                             Thread.sleep(100);
@@ -255,8 +261,10 @@ public class FCFS extends JFrame {
             AWTtxt.setText((float)total/num +"s");
             ATTtxt.setText((float)tol/num +"s");
             CPUtxt.setText("Idle");
+            queuetxt.setText("Processes Completed");
 
         }).start();
+        
         
     }
 
