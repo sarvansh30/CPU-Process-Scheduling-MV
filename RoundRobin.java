@@ -64,41 +64,48 @@ public class RoundRobin extends JFrame {
         frame.add(panel);
         panel.setBackground(Color.DARK_GRAY);
         // Create the heading label
+        JLabel title = new JLabel("Algorithm: Round Robin");
+        title.setFont(new Font("Times", Font.BOLD, 17));
+        title.setBounds(10, 10, 800, 30);
+        title.setForeground(Color.white);
+        panel.add(title);
+        // Create the heading label
         CPUlabel = new JLabel("CPU allocated to:");
         CPUlabel.setFont(new Font("Times", Font.BOLD, 17));
-        CPUlabel.setBounds(10, 10, 200, 30);
+        CPUlabel.setBounds(10, 50, 200, 30);
         CPUlabel.setForeground(Color.white);
         panel.add(CPUlabel);
 
         CPUtxt = new JLabel("....");
         CPUtxt.setFont(new Font("Times", Font.BOLD, 17));
-        CPUtxt.setBounds(220, 10, 200, 30);
+        CPUtxt.setBounds(220, 50, 200, 30);
         CPUtxt.setForeground(Color.white);
         panel.add(CPUtxt);
 
         AvgWT = new JLabel("Avg Waiting Time:");
         AvgWT.setFont(new Font("Times", Font.BOLD, 17));
-        AvgWT.setBounds(10, 50, 200, 30);
+        AvgWT.setBounds(10, 90, 200, 30);
         AvgWT.setForeground(Color.white);
         panel.add(AvgWT);
 
         AWTtxt = new JLabel("....");
         AWTtxt.setFont(new Font("Times", Font.BOLD, 17));
-        AWTtxt.setBounds(220, 50, 200, 30);
+        AWTtxt.setBounds(220, 90, 200, 30);
         AWTtxt.setForeground(Color.white);
         panel.add(AWTtxt);
 
         AvgTT = new JLabel("Avg Turnaround Time:");
         AvgTT.setFont(new Font("Times", Font.BOLD, 17));
-        AvgTT.setBounds(10, 90, 200, 30);
+        AvgTT.setBounds(10, 130, 200, 30);
         AvgTT.setForeground(Color.white);
         panel.add(AvgTT);
 
         ATTtxt = new JLabel("....");
         ATTtxt.setFont(new Font("Times", Font.BOLD, 17));
-        ATTtxt.setBounds(220, 90, 200, 30);
+        ATTtxt.setBounds(220, 130, 200, 30);
         ATTtxt.setForeground(Color.white);
         panel.add(ATTtxt);
+
 
         Pro = new JLabel("Processes");
         Pro.setFont(new Font("Times", Font.BOLD, 17));
